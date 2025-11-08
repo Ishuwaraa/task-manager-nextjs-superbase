@@ -15,12 +15,12 @@ async function getAuthenticatedUser() {
     return { user, supabase };
 }
 
-export async function addTodo(formData: FormData) {
+export async function addTodo(task: string) {
     const { user, supabase } = await getAuthenticatedUser();
 
     const newTodo: CreateTodoInput = {
         user_id: user.id,
-        task: formData.get("task") as string
+        task
     }
 
     const { error } = await supabase

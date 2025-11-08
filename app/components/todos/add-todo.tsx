@@ -1,20 +1,36 @@
 "use client";
 
 import { addTodo } from "@/utils/actions/todos/actions";
-import { useRef } from "react";
+import { useState } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
+
+type Inputs = {
+    task: string
+}
 
 const AddTodo = () => {
-    const ref = useRef<HTMLFormElement>(null);
+    const [isSubmtting, setIsSubmitting] = useState(false);
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors },
+    } = useForm<Inputs>();
+
+    const onSubmit: SubmitHandler<Inputs> = async (data) => {
+        setIsSubmitting(true);
+        await addTodo(data.task);
+        setIsSubmitting(false);
+        reset();
+    };
     
     return ( 
         <div className=" mt-5">
-            <form action={async (formData) => {
-                console.log(formData);
-                await addTodo(formData);
-                ref.current?.reset();
-            }}>
-                <input name="task" type='text' placeholder='Add new task' required /><br />
-                <button type='submit'>Add Task</button>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <input type='text' placeholder='Add new task' {...register("task", { required: true })} />
+                {errors.task && <span>Task is required</span>}<br />
+
+                <button type='submit' disabled={isSubmtting}>{isSubmtting ? "Submitting" : "Add new task" }</button>
             </form>
         </div>
      );

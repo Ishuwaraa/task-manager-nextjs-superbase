@@ -17,7 +17,6 @@ export default async function TodoList() {
     const completedTodos = todos.filter((todo) => todo.is_complete);
 
     return (
-
         <div className="space-y-8">
             {activeTodos.length > 0 && (
                 <div>

@@ -10,28 +10,37 @@ type AuthInput = {
     password: string
 }
 
-export async function login(authInput: AuthInput) {
+type ActionResult = {
+    success: boolean,
+    status?: number,
+    error?: string
+}
+
+export async function login(authInput: AuthInput): Promise<ActionResult> {
     const supabase = await createClient()
 
     const { error } = await supabase.auth.signInWithPassword(authInput)
 
     if (error) {
-        throw new Error(error.message);
+        console.log(error);
+        //throw new Error(error.message);
+        return { success: false, status: error.status, error: error.message}
     }
 
     revalidatePath('/', 'layout')
     redirect('/tasks')
 }
 
-export async function signup(authInput: AuthInput) {
+export async function signup(authInput: AuthInput): Promise<ActionResult> {
     const supabase = await createClient()
 
     const { data, error } = await supabase.auth.signUp(authInput)
-    console.log('signup data', data);
-    console.log('signup error', error);
+    // console.log('signup data', data);
+    // console.log('signup error', error);
 
     if (error) {
-        throw new Error(error.message);
+        //throw new Error(error.message);
+        return { success: false, status: error.status, error: error.message}
     }
 
     revalidatePath('/', 'layout')
@@ -43,5 +52,5 @@ export async function signout() {
 
     await supabase.auth.signOut({ scope: 'local' })
 
-    // redirect('/signin')
+    redirect('/signin')
 }

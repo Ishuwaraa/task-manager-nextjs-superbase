@@ -2,6 +2,8 @@
 
 import { deleteTodo } from "@/utils/actions/todos/actions"
 import { useState } from "react";
+import DeleteIcon from "@/public/bin.png";
+import Image from "next/image";
 
 export default function DeleteTodoButton({ id }: { id: number }) {
     const [isDeleting, setIsDeleting] = useState(false);
@@ -14,10 +16,14 @@ export default function DeleteTodoButton({ id }: { id: number }) {
     return (
         <button 
             onClick={handleDelete}
-            className="text-red-600 hover:text-red-800 hover:bg-red-50 px-3 py-1 rounded transition font-medium text-sm cursor-pointer"
+            className="px-3 py-1 cursor-pointer"
             disabled={isDeleting}
         >
-            { isDeleting ? 'Deleting...' : 'Delete'}
+            <Image
+                src={DeleteIcon}
+                alt="delete"
+                className={`w-5 ${isDeleting && 'opacity-10'}`}
+            />
         </button>
     )
 }

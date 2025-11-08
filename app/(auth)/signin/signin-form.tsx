@@ -27,11 +27,19 @@ export default function SignInForm() {
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         try {
             setIsSubmitting(true);
-            await login(data);
+            const result = await login(data);
+            // console.log(result);
+
+            if (!result.success && result.error) {
+                setError("root", {
+                    message: result.error
+                })
+            }
         } catch (error) {
-            setError("root", {
-                message: error instanceof Error ? error.message : "Signin failed"
-            });
+            // setError("root", {
+            //     message: error instanceof Error ? error.message : "Signin failed"
+            // });
+            console.error(error);
         } finally {
             setIsSubmitting(false);
         }

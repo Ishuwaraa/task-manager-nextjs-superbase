@@ -28,11 +28,18 @@ export default function SignUpPage() {
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         try {
             setIsSubmitting(true);
-            await signup(data);
+            const result = await signup(data);
+
+            if (!result.success && result.error) {
+                setError("root", {
+                    message: result.error
+                })
+            }
         } catch (error) {
-            setError("root", {
-                message: error instanceof Error ? error.message : "Signup failed"
-            });
+            // setError("root", {
+            //     message: error instanceof Error ? error.message : "Signup failed"
+            // });
+            console.error(error);
         } finally {
             setIsSubmitting(false);
         }

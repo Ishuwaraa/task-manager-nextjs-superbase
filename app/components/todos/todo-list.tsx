@@ -8,12 +8,26 @@ export default async function TodoList() {
     return ( 
         <div className='mt-5'>
             <ul>
-                {todos.map((todo) => (
-                    <li key={todo.id}>
-                        <TodoCheckbox id={todo.id} isComplete={todo.is_complete} />
-                        <span className="mx-2">{todo.task}</span>
-                        <DeleteTodoButton id={todo.id} />
-                    </li>
+                {todos && 
+                    todos
+                        .filter((todo) => !todo.is_complete)
+                        .map((todo) => (
+                            <li key={todo.id}>
+                                <TodoCheckbox id={todo.id} isComplete={todo.is_complete} />
+                                <span className="mx-2">{todo.task}</span>
+                                <DeleteTodoButton id={todo.id} />
+                            </li>
+                ))}
+                
+                {todos && 
+                    todos
+                        .filter((todo) => todo.is_complete)
+                        .map((todo) => (
+                            <li key={todo.id}>
+                                <TodoCheckbox id={todo.id} isComplete={todo.is_complete} />
+                                <span className="mx-2">{todo.task}</span>
+                                <DeleteTodoButton id={todo.id} />
+                            </li>
                 ))}
             </ul>
         </div>

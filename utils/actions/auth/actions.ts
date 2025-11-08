@@ -10,32 +10,32 @@ type AuthInput = {
     password: string
 }
 
-export async function login(data: AuthInput) {
+export async function login(authInput: AuthInput) {
     const supabase = await createClient()
 
-    const { error } = await supabase.auth.signInWithPassword(data)
+    const { error } = await supabase.auth.signInWithPassword(authInput)
 
     if (error) {
         throw new Error(error.message);
     }
 
     revalidatePath('/', 'layout')
-    redirect('/')
+    redirect('/tasks')
 }
 
-export async function signup(data: AuthInput) {
+export async function signup(authInput: AuthInput) {
     const supabase = await createClient()
 
-    const { error } = await supabase.auth.signUp(data)
+    const { data, error } = await supabase.auth.signUp(authInput)
+    console.log('signup data', data);
+    console.log('signup error', error);
 
-    // this throws errors if password is not 6 characters long too
-    // need to catch them and show proper error messages to client
     if (error) {
         throw new Error(error.message);
     }
 
     revalidatePath('/', 'layout')
-    redirect('/signin')
+    redirect('/signin?msg=check-email')
 }
 
 export async function signout() {

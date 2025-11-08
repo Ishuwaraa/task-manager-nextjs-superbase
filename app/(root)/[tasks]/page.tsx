@@ -1,8 +1,8 @@
-import { redirect } from 'next/navigation'
-import { createClient } from '@/utils/supabase/server'
-import { signout } from '@/utils/actions/auth/actions';
+import { redirect } from 'next/navigation';
+import { createClient } from '@/utils/supabase/server';
 import AddTodo from '@/app/components/todos/add-todo';
 import TodoList from '@/app/components/todos/todo-list';
+import { Suspense } from 'react';
 
 export default async function TaskPage() {
     const supabase = await createClient();
@@ -14,10 +14,10 @@ export default async function TaskPage() {
 
     return (
         <main className="">
-            <p>Hello {data.user.email}</p>
-            <button onClick={signout}>logout</button>
             <AddTodo />
-            <TodoList />
+            <Suspense fallback={<div>Loading tasks...</div>}>
+                <TodoList />
+            </Suspense>
         </main>
     );
 }

@@ -18,8 +18,7 @@ export async function login(formData: FormData) {
   const { error } = await supabase.auth.signInWithPassword(data)
 
   if (error) {
-    console.log(error);
-    redirect('/error')
+    throw new Error(error.message);
   }
 
   revalidatePath('/', 'layout')
@@ -38,12 +37,14 @@ export async function signup(formData: FormData) {
 
   const { error } = await supabase.auth.signUp(data)
 
+  // this throws errors if password is not 6 characters long too
+  // need to catch them and show proper error messages to client
   if (error) {
-    redirect('/error')
+    throw new Error(error.message);
   }
 
   revalidatePath('/', 'layout')
-  redirect('/')
+  redirect('/signin')
 }
 
 export async function signout() {

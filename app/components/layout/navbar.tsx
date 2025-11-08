@@ -9,9 +9,22 @@ export default async function Navbar() {
     if (!data?.user) return null;
 
     return (
-        <nav>
-            <p>Hello {data.user.email}</p>
-            <button onClick={signout}>logout</button>
+        <nav className="bg-white shadow-md">
+            <div className="max-w-7xl mx-auto px-8 py-4">
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2 font-semibold">
+                        <span className="text-gray-600">Hello,</span>
+                        <span className="text-gray-800">{data.user.email}</span>
+                    </div>
+                    
+                    <button 
+                        onClick={signout}
+                        className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-medium text-sm"
+                    >
+                        Logout
+                    </button>
+                </div>
+            </div>
         </nav>
     )
 }

@@ -39,7 +39,7 @@ export default function SignInPage() {
 
     useEffect(() => {
         if (searchParams.get('msg') === 'check-email') {
-            toast.success('Please check your email to confirm your account!', {
+            toast.success('Please check your email to activate your account!', {
                 position: 'top-right',
                 duration: 4000
             });
